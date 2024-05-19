@@ -3,6 +3,15 @@ using IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:44361");
+        });
+});
+
 // Add services to the container.
 builder.Services.AddSQLServerInfra(builder.Configuration);
 builder.Services.AddIoCServices();
@@ -20,6 +29,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 

@@ -8,9 +8,9 @@ namespace Api.Controllers
     [ApiController]
     public class CategoriaController : ControllerBase
     {
-        private readonly ICategoriaServico _servicoCategoria;
+        private readonly IBaseCategoriaServico _servicoCategoria;
 
-        public CategoriaController(ICategoriaServico servicoCategoria)
+        public CategoriaController(IBaseCategoriaServico servicoCategoria)
         {
             _servicoCategoria = servicoCategoria;
         }

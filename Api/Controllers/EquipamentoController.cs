@@ -8,9 +8,9 @@ namespace Api.Controllers
     [ApiController]
     public class EquipamentoController : ControllerBase
     {
-        private readonly IEquipamentoServico _equipamentoServico;
+        private readonly IBaseEquipamentoServico _equipamentoServico;
 
-        public EquipamentoController(IEquipamentoServico equipamentoServico)
+        public EquipamentoController(IBaseEquipamentoServico equipamentoServico)
         {
             _equipamentoServico = equipamentoServico;
         }
