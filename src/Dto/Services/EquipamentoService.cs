@@ -1,34 +1,43 @@
-﻿using Dto.Dto.Request;
+﻿using AutoMapper;
+using Domain.Interfaces;
+using Domain.Models;
+using Dto.Dto.Request;
 using Dto.Dto.Response;
 using Dto.Services.IServices;
 
 namespace Dto.Services
 {
-    public class EquipamentoService : IEquipamentoServico
+    public class EquipamentoService(IBaseCrudGenerico<Equipamento> equipamentoRepository, IMapper mapper) : IEquipamentoServico
     {
-        public Task<EquipamentoResponseDto> Atualizar(EquipamentoRequestDto entity)
+        public async Task<EquipamentoResponseDto> Atualizar(EquipamentoRequestDto entity)
         {
-            throw new NotImplementedException();
+            var result = mapper.Map<Equipamento>(entity);
+            var equipamento = await equipamentoRepository.Atualizar(result);
+            return mapper.Map<EquipamentoResponseDto>(equipamento);
         }
 
-        public Task<EquipamentoResponseDto> BuscarPorReferencia(string referencia)
+        public async Task<EquipamentoResponseDto> BuscarPorReferencia(string referencia)
         {
-            throw new NotImplementedException();
+            var equipamento = await equipamentoRepository.BuscarPorReferencia(referencia);
+            return mapper.Map<EquipamentoResponseDto>(equipamento);
         }
 
-        public Task<IEnumerable<EquipamentoResponseDto>> BuscarTodos()
+        public async Task<IEnumerable<EquipamentoResponseDto>> BuscarTodos()
         {
-            throw new NotImplementedException();
+            var equipamento = await equipamentoRepository.BuscarTodos();
+            return mapper.Map<IEnumerable<EquipamentoResponseDto>>(equipamento);
         }
 
-        public Task<EquipamentoResponseDto> Criar(EquipamentoRequestDto entity)
+        public async Task<EquipamentoResponseDto> Criar(EquipamentoRequestDto entity)
         {
-            throw new NotImplementedException();
+            var result = mapper.Map<Equipamento>(entity);
+            var equipamento = await equipamentoRepository.Criar(result);
+            return mapper.Map<EquipamentoResponseDto>(equipamento);
         }
 
-        public Task<bool> Deletar(int id)
+        public async Task<bool> Deletar(int id)
         {
-            throw new NotImplementedException();
+            return await equipamentoRepository.Deletar(id);
         }
     }
 }
