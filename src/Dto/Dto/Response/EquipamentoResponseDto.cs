@@ -9,7 +9,7 @@ namespace Dto.Dto.Response
         public string NomeEquipamento { get; set; }
 
         [JsonPropertyName("categoria")]
-        public CategoriaResponseDto Categoria { get; private set; }
+        public CategoriaResponseDto Categoria { get; set; }
 
         [JsonPropertyName("descricao")]
         public string Descricao { get; set; }

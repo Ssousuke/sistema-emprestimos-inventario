@@ -5,20 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
 {
-    public class CategoriaRepository : IBaseCrudGenerico<Categoria>
+    public class CRUDEquipamentoRepository(Context context) : IBaseCrudGenerico<Equipamento>
     {
-        private readonly Context context;
-
-        public CategoriaRepository(Context context)
-        {
-            this.context = context;
-        }
-
-        public async Task<Categoria> Atualizar(Categoria entity)
+        public async Task<Equipamento> Atualizar(Equipamento entity)
         {
             try
             {
-                var result = context.Categorias.Update(entity);
+                var result = context.Equipamentos.Update(entity);
                 await context.SaveChangesAsync();
                 return result.Entity;
             }
@@ -28,17 +21,17 @@ namespace Data.Repositories
             }
         }
 
-        public async Task<Categoria> BuscarPorReferencia(string referencia)
-            => await context.Categorias.SingleOrDefaultAsync(c => c.NomeCategoria.ToLower().Contains(referencia.ToLower()));
+        public async Task<Equipamento> BuscarPorReferencia(string referencia) =>
+               await context.Equipamentos.Include(x => x.Categoria).SingleAsync(c => c.NomeEquipamento.ToLower().Contains(referencia.ToLower()));
 
-        public async Task<IEnumerable<Categoria>> BuscarTodos() =>
-               await context.Categorias.OrderByDescending(x => x.DataCriacao).ToListAsync();
+        public async Task<IEnumerable<Equipamento>> BuscarTodos() =>
+               await context.Equipamentos.Include(x => x.Categoria).OrderByDescending(x => x.DataCriacao).ToListAsync();
 
-        public async Task<Categoria> Criar(Categoria entity)
+        public async Task<Equipamento> Criar(Equipamento entity)
         {
             try
             {
-                var result = await context.Categorias.AddAsync(entity);
+                var result = await context.Equipamentos.AddAsync(entity);
                 await context.SaveChangesAsync();
                 return result.Entity;
             }
@@ -52,7 +45,7 @@ namespace Data.Repositories
         {
             try
             {
-                var result = await context.Categorias.SingleAsync(c => c.Id == id);
+                var result = await context.Equipamentos.SingleAsync(c => c.Id == id);
                 context.Remove(result);
                 return await context.SaveChangesAsync() > 0;
             }

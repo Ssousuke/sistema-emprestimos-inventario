@@ -7,7 +7,7 @@ using Dto.Services.IServices;
 
 namespace Dto.Services
 {
-    public class CategoriaService(IBaseCrudGenerico<Categoria> _categoriaRepository, IMapper _mapper) : ICategoriaServico
+    public class BaseCategoriaService(IBaseCrudGenerico<Categoria> _categoriaRepository, IMapper _mapper) : IBaseCategoriaServico
     {
         public async Task<CategoriaResponseDto> Atualizar(CategoriaRequestDto entity)
         {

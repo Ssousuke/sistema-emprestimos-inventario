@@ -12,11 +12,11 @@ namespace IoC
     {
         public static IServiceCollection AddIoCServices(this IServiceCollection services)
         {
-            services.AddScoped(typeof(IBaseCrudGenerico<Categoria>), typeof(CategoriaRepository));
-            services.AddScoped(typeof(IBaseCrudGenerico<Equipamento>), typeof(EquipamentoRepository));
+            services.AddScoped(typeof(IBaseCrudGenerico<Categoria>), typeof(CRUDCategoriaRepository));
+            services.AddScoped(typeof(IBaseCrudGenerico<Equipamento>), typeof(CRUDEquipamentoRepository));
 
-            services.AddScoped<IEquipamentoServico, EquipamentoService>();
-            services.AddScoped<ICategoriaServico, CategoriaService>();
+            services.AddScoped<IBaseEquipamentoServico, BaseEquipamentoService>();
+            services.AddScoped<IBaseCategoriaServico, BaseCategoriaService>();
 
             services.AddAutoMapper(typeof(ProfileMapping));
 

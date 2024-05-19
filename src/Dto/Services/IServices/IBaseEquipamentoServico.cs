@@ -3,7 +3,7 @@ using Dto.Dto.Response;
 
 namespace Dto.Services.IServices
 {
-    public interface IEquipamentoServico
+    public interface IBaseEquipamentoServico
     {
         Task<IEnumerable<EquipamentoResponseDto>> BuscarTodos();
         Task<EquipamentoResponseDto> BuscarPorReferencia(string referencia);

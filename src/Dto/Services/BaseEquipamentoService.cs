@@ -7,7 +7,7 @@ using Dto.Services.IServices;
 
 namespace Dto.Services
 {
-    public class EquipamentoService(IBaseCrudGenerico<Equipamento> equipamentoRepository, IMapper mapper) : IEquipamentoServico
+    public class BaseEquipamentoService(IBaseCrudGenerico<Equipamento> equipamentoRepository, IMapper mapper) : IBaseEquipamentoServico
     {
         public async Task<EquipamentoResponseDto> Atualizar(EquipamentoRequestDto entity)
         {
