@@ -22,10 +22,10 @@ namespace Data.Repositories
         }
 
         public async Task<Equipamento> BuscarPorReferencia(string referencia) =>
-               await context.Equipamentos.SingleAsync(c => c.NomeEquipamento.ToLower().Contains(referencia.ToLower()));
+               await context.Equipamentos.Include(x => x.Categoria).SingleAsync(c => c.NomeEquipamento.ToLower().Contains(referencia.ToLower()));
 
         public async Task<IEnumerable<Equipamento>> BuscarTodos() =>
-               await context.Equipamentos.ToListAsync();
+               await context.Equipamentos.Include(x => x.Categoria).OrderByDescending(x => x.DataCriacao).ToListAsync();
 
         public async Task<Equipamento> Criar(Equipamento entity)
         {
