@@ -9,7 +9,6 @@ namespace Domain.Models
         [Column("NOME_CATEGORIA")]
         public string NomeCategoria { get; private set; }
 
-        [IgnoreDataMember]
         public IEnumerable<Equipamento>? Equipamentos { get; private set; }
 
         public void AtualizarCategoria(string nome)
