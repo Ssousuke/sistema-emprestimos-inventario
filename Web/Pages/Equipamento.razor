@@ -1,0 +1,148 @@
+﻿@page "/equipamento"
+@using Dto.Dto.Response
+@using System.Text.Json
+@inject HttpClient Http
+
+@if (equipamentos is not null)
+{
+    <div class="shadow-sm p-3 mb-1">
+        <form class="row g-3">
+            <div class="col-md-4">
+                <label for="inputCity" class="form-label">Nome Equipamento</label>
+                <input type="text" class="form-control" id="inputCity" placeholder="Digite o nome do equipamento...">
+            </div>
+            <div class="col-md-4">
+                <label for="inputState" class="form-label">Tipo Equipamento</label>
+                <select id="inputState" class="form-select">
+                    <option selected>Tipo de equipamento...</option>
+                    <option>...</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="inputZip" class="form-label">Data Cadastro</label>
+                <input type="date" class="form-control" id="inputZip">
+            </div>
+        </form>
+    </div>
+
+    <div class="shadow-sm p-3 mb-2">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Adicionar Equipamento
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Adicionar Equipamento</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3">
+                            <div class="col-md-12">
+                                <label for="nomeEquipamento" class="form-label"><i class="fa-solid fa-tag"></i> Nome Equipamento</label>
+                                <input type="email" class="form-control" id="nomeEquipamento">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="descricao" class="form-label"><i class="fa-solid fa-text-width"></i> Descrição</label>
+                                <textarea rows="4" class="form-control" id="descricao" />
+                            </div>
+                            <div class="col-12">
+                                <label for="quantidade" class="form-label"><i class="fa-solid fa-arrow-up-9-1"></i> Quantidade</label>
+                                <input type="number" class="form-control" id="quantidade">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="inputState" class="form-label"><i class="fa-solid fa-hashtag"></i> Tipo Equipamento</label>
+                                <select id="inputState" class="form-select">
+                                    <option selected>Tipo...</option>
+                                    <option>...</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary">Cadastrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead class="text-uppercase bg-dark text-white">
+            <tr>
+                <th>Id</th>
+                <th>Equipamento</th>
+                <th>Descrição</th>
+                <th>Quantidade</th>
+                <th>Data Criação</th>
+                <th>Data Atualização</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var equipamento in equipamentos)
+            {
+                <tr>
+                    <td>@equipamento.Id</td>
+                    <td>@equipamento.NomeEquipamento</td>
+                    <td>@equipamento.Descricao</td>
+                    <td>@equipamento.Quantidade</td>
+                    <td>@equipamento.DataCriacao</td>
+                    <td>@equipamento.DataAtualizacao</td>
+                    <td>
+                        <btn class="btn btn-outline-primary">
+                            <i class="fa-regular fa-eye"></i>
+                        </btn>
+                        <btn class="btn btn-outline-success">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </btn>
+                        <btn class="btn btn-outline-danger">
+                            <i class="fa-solid fa-trash"></i>
+                        </btn>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        <p>Tentando carregar equipamentos...</p>
+    </div>
+}
+
+@code {
+    private IEnumerable<EquipamentoResponseDto> equipamentos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        equipamentos = await GetEquipamentosRequestApi();
+        await base.OnInitializedAsync();
+    }
+
+    public async Task<IEnumerable<EquipamentoResponseDto>> GetEquipamentosRequestApi()
+    {
+        HttpRequestMessage request = new HttpRequestMessage();
+        request.Method = HttpMethod.Get;
+        request.RequestUri = new Uri("https://localhost:44392/api/Equipamento/listar");
+
+        using (HttpResponseMessage response = await Http.SendAsync(request))
+        {
+            string contentResponse = await response.Content.ReadAsStringAsync();
+            var json = JsonSerializer.Deserialize<IEnumerable<EquipamentoResponseDto>>(contentResponse);
+
+            if (response.IsSuccessStatusCode)
+            {
+                equipamentos = json;
+                return equipamentos;
+            }
+
+            return equipamentos;
+        }
+    }
+}
